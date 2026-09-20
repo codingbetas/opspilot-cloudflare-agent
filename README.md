@@ -22,6 +22,10 @@ OpsPilot is a small, explainable AI infrastructure-operations assistant built sp
 - Simple simulated telemetry so the project works without external monitoring credentials
 - Responsive React UI
 
+## Live Demo
+
+🚀 **Live Application:** [https://opspilot-ai-agent.codewithhr.workers.dev](https://opspilot-ai-agent.codewithhr.workers.dev/)
+
 ## Architecture
 
 ```text
