@@ -24,7 +24,7 @@ OpsPilot is a small, explainable AI infrastructure-operations assistant built sp
 
 ## Live Demo
 
-🚀 **Live Application:** [https://opspilot-ai-agent.codewithhr.workers.dev](https://opspilot-ai-agent.codewithhr.workers.dev/))
+🚀 **Live Application:** [https://opspilot-ai-agent.codewithhr.workers.dev](https://opspilot-ai-agent.codewithhr.workers.dev/)
 
 ## Architecture
 
