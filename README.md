@@ -13,9 +13,7 @@ Built for Cloudflare's optional Agents assignment.
 
 **[opspilot-ai-agent.codewithhr.workers.dev](https://opspilot-ai-agent.codewithhr.workers.dev/)**
 
-<!-- Add a screenshot of the chat UI, then uncomment the next line:
-![OpsPilot chat UI](docs/screenshot.png)
--->
+<img src="docs/screenshot.png" alt="OpsPilot chat UI showing an API incident diagnosis" width="800">
 
 ---
 
@@ -46,11 +44,11 @@ Built for Cloudflare's optional Agents assignment.
 ## ✨ Features
 
 - Stateful chat agent
-- Streaming LLM responses
 - Server-side tools with typed schemas
 - Coordinated multi-step incident diagnosis
 - Persistent conversation history
 - Persistent operational state
+- Separate agent session per browser
 - Simulated telemetry, so it runs without external monitoring credentials
 - Responsive React UI
 
@@ -64,6 +62,8 @@ React Chat UI
       | WebSocket chat
       v
 Cloudflare AIChatAgent (Durable Object)
+      |
+      +--> Intent router (diagnose / lookup / state)
       |
       +--> Workers AI LLM
       |
@@ -123,13 +123,13 @@ The first deployment creates the Durable Object-backed agent and the Workers AI 
 
 ## 🧠 Design decisions
 
-**LLM:** Workers AI interprets the operator's request and decides which tool to call.
+**LLM:** Workers AI writes the operator-facing answer. Clear diagnose, lookup, and state requests are detected in code and answered from verified data, so the model only narrates facts and cannot invent telemetry. Open-ended requests fall back to model-driven tool calling.
 
 **Workflow:** `runIncidentDiagnosis` coordinates three stages: health check, error inspection, and severity classification. Each stage feeds the next.
 
 **State:** The Durable Object agent persists the conversation and an `OpsState` object containing the active service, last incident, and number of checks.
 
-**Tools:** The model never touches internal data directly. It calls typed server-side tools defined with Zod schemas, which makes each integration explicit and testable.
+**Tools:** The model never touches internal data directly. Data access goes through typed server-side functions, and open-ended requests use tools defined with Zod schemas, which makes each integration explicit and testable.
 
 **Scalability:** The Agents runtime gives each agent instance a durable identity and its own state. Workers AI runs the model call at the edge, and the tool layer can later call real APIs.
 
